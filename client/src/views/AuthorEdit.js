@@ -21,20 +21,18 @@ export const AuthorEdit = () => {
         })
         .then(() => {navigate("/home")})
         .catch(error => {
-            const errorRes = error.response.data.errors
-            for(const error of Object.keys(errorRes)){
-                setErrors([...errors, errorRes[error].message])
+            const errorResponse = error.response.data.errors
+            const errorArray = []
+            for (const key of Object.keys(errorResponse)){
+                errorArray.push(errorResponse[key].message)
             }
+            setErrors(errorArray)
         })
     }
     return (
         <div className="bg-slate-500 w-1/2 mx-6 mt-3 p-5 rounded flex flex-col justify-center items-center">
             <div>
-                {
-                    errors.map((item, index) => (
-                        <p className="text-red-800 font-bold" key={index}>{item}</p>
-                        ))
-                }
+                {errors.map((err,index) => <p key={index}>{err}</p>)}
             </div>
             <AuthorForm submit={submitHandler} author={author}/>
             <Link className="hover:text-blue-300" to="/home">Back to Authors List</Link>
